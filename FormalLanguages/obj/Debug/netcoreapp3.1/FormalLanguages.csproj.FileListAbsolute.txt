@@ -1,0 +1,11 @@
+C:\Users\manasypoves\source\repos\FormalLanguages\FormalLanguages\bin\Debug\netcoreapp3.1\FormalLanguages.exe
+C:\Users\manasypoves\source\repos\FormalLanguages\FormalLanguages\bin\Debug\netcoreapp3.1\FormalLanguages.deps.json
+C:\Users\manasypoves\source\repos\FormalLanguages\FormalLanguages\bin\Debug\netcoreapp3.1\FormalLanguages.runtimeconfig.json
+C:\Users\manasypoves\source\repos\FormalLanguages\FormalLanguages\bin\Debug\netcoreapp3.1\FormalLanguages.runtimeconfig.dev.json
+C:\Users\manasypoves\source\repos\FormalLanguages\FormalLanguages\bin\Debug\netcoreapp3.1\FormalLanguages.dll
+C:\Users\manasypoves\source\repos\FormalLanguages\FormalLanguages\bin\Debug\netcoreapp3.1\FormalLanguages.pdb
+C:\Users\manasypoves\source\repos\FormalLanguages\FormalLanguages\obj\Debug\netcoreapp3.1\FormalLanguages.csprojAssemblyReference.cache
+C:\Users\manasypoves\source\repos\FormalLanguages\FormalLanguages\obj\Debug\netcoreapp3.1\FormalLanguages.AssemblyInfoInputs.cache
+C:\Users\manasypoves\source\repos\FormalLanguages\FormalLanguages\obj\Debug\netcoreapp3.1\FormalLanguages.AssemblyInfo.cs
+C:\Users\manasypoves\source\repos\FormalLanguages\FormalLanguages\obj\Debug\netcoreapp3.1\FormalLanguages.dll
+C:\Users\manasypoves\source\repos\FormalLanguages\FormalLanguages\obj\Debug\netcoreapp3.1\FormalLanguages.pdb
