@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.IO;
 
 namespace FormalLanguages
 {
@@ -6,10 +9,24 @@ namespace FormalLanguages
     {
         static void Main(string[] args)
         {
-            var automaton = new Automaton(@"C:\Users\manasypoves\Desktop\Input.txt");
+            //var automaton = new Automaton(@"C:\Users\manasypoves\Desktop\DA.txt");
+            //automaton.Show();
+            var automaton = new NDAutomaton(@"C:\Users\manasypoves\Desktop\NDA.txt");
+            Console.WriteLine("NDA");
             automaton.Show();
             Console.WriteLine();
-            automaton.Read("ab");
+
+            var temp = new Automaton(automaton);
+            Console.WriteLine("KDA");
+            temp.Show();
+            Console.WriteLine();
+
+            for (; ; )
+            {
+                var word = Console.ReadLine();
+                automaton.Read(word);
+                temp.Read(word);
+            }
         }
     }
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\manasypoves\\source\\repos\\FormalLanguages\\FormalLanguages\\FormalLanguages.csproj": {}
+    "C:\\Users\\manasypoves\\Desktop\\FormalLanguages\\FormalLanguages\\FormalLanguages.csproj": {}
   },
   "projects": {
-    "C:\\Users\\manasypoves\\source\\repos\\FormalLanguages\\FormalLanguages\\FormalLanguages.csproj": {
+    "C:\\Users\\manasypoves\\Desktop\\FormalLanguages\\FormalLanguages\\FormalLanguages.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\manasypoves\\source\\repos\\FormalLanguages\\FormalLanguages\\FormalLanguages.csproj",
+        "projectUniqueName": "C:\\Users\\manasypoves\\Desktop\\FormalLanguages\\FormalLanguages\\FormalLanguages.csproj",
         "projectName": "FormalLanguages",
-        "projectPath": "C:\\Users\\manasypoves\\source\\repos\\FormalLanguages\\FormalLanguages\\FormalLanguages.csproj",
+        "projectPath": "C:\\Users\\manasypoves\\Desktop\\FormalLanguages\\FormalLanguages\\FormalLanguages.csproj",
         "packagesPath": "C:\\Users\\manasypoves\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\manasypoves\\source\\repos\\FormalLanguages\\FormalLanguages\\obj\\",
+        "outputPath": "C:\\Users\\manasypoves\\Desktop\\FormalLanguages\\FormalLanguages\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\manasypoves\\AppData\\Roaming\\NuGet\\NuGet.Config",

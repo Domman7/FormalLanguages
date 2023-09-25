@@ -61,6 +61,153 @@ namespace FormalLanguages
             }
         }
 
+        public Automaton(NDAutomaton init)//NDA to KDA
+        {
+            Console.WriteLine("NDA -> KDA");
+
+            var DelthaF = init.DelthaF;
+            alphabet = init.Alphabet;
+            length = init.Length;
+            initial = init.Initial;
+
+            List<List<int>> newStatuses = new List<List<int>>();
+            List<int> temp = new List<int>();
+            Queue<List<int>> statuses = new Queue<List<int>>();
+
+            temp.Add(initial);
+            statuses.Enqueue(temp);
+            newStatuses.Add(temp);
+
+            //-----------------------------
+            Console.Write("  \t");
+            foreach (var item in alphabet)
+            {
+                Console.Write(item + "\t");
+            }
+            Console.WriteLine();
+            //-----------------------------
+
+            while (statuses.Count != 0)
+            {
+                temp = statuses.Dequeue();
+
+                //----------------------------
+                foreach (var outs in temp)
+                    Console.Write(outs + " ");
+                Console.Write('\t');
+                //----------------------------
+
+                foreach (var ch in alphabet)
+                {
+                    var union = new List<int>();
+                    foreach(var item in temp)
+                    {
+                        if (DelthaF[item].ContainsKey(ch))
+                        {
+                            foreach (var st in DelthaF[item][ch])
+                            {
+                                union.Add(st);
+                            }
+                        }
+                    }
+                    union.Sort();
+
+                    bool flag = true;
+
+                    if (union.Count == 0)
+                    {
+                        //-------------------
+                        Console.Write("-\t");
+                        //-------------------
+
+                        flag = false;
+                    }
+                    else
+                    {
+                        //----------------------------
+                        foreach (var outs in union)
+                            Console.Write(outs + " ");
+                        Console.Write('\t');
+                        //----------------------------
+
+                        foreach (var item in newStatuses)
+                        {
+                            if (Automaton.Equals(item, union))
+                            {
+                                flag = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (flag)
+                    {
+                        statuses.Enqueue(union);
+                        newStatuses.Add(union);
+                    }
+                }
+                Console.WriteLine();
+            }
+
+            Dictionary<string, int> newKeys = new Dictionary<string, int>();
+            int counter = 0;
+            foreach(var item in newStatuses)
+            {
+                newKeys[Automaton.ListToString(item)] = counter;
+                counter++;
+            }
+
+            delthaF = new Dictionary<int, Dictionary<char, int>>();
+            temp = new List<int>();
+            temp.Add(init.Initial);
+
+            final = new List<int>();
+
+            foreach (var st in newStatuses)
+            {
+                bool finalFlag = false;
+                var val = new Dictionary<char, int>();
+                foreach (var ch in alphabet)
+                {
+                    var union = new List<int>();
+                    foreach (var item in st)
+                    {
+                        if (DelthaF[item].ContainsKey(ch))
+                        {
+                            foreach (var stat in DelthaF[item][ch])
+                            {
+                                union.Add(stat);
+                            }
+                        }
+
+                        if(init.Final.Contains(item))
+                        {
+                            finalFlag = true;
+                        }
+                    }
+                    union.Sort();
+                    if(union.Count != 0)
+                        val[ch] = newKeys[Automaton.ListToString(union)];
+                }
+
+                int newKey = newKeys[Automaton.ListToString(st)];
+                if(finalFlag)
+                    final.Add(newKey);
+                delthaF[newKey] = val;
+            }
+
+            //foreach (var item in newStatuses)
+            //{
+            //    foreach (var st in item)
+            //    {
+            //        Console.Write(st + " ");
+            //    }
+            //    Console.WriteLine();
+            //}
+
+            Console.WriteLine();
+        }
+
         public void Show()
         {
             Console.Write("  \t");
@@ -99,14 +246,54 @@ namespace FormalLanguages
         {
             int t = 0;
             int status = initial;
+            bool accepted = true;
 
+            Console.WriteLine("Word: " + word);
             foreach(var ch in word)
             {
-                status = delthaF[status][ch];
-                Console.Write(t + ") " + ch + ", " + status);
-                t++;
-                Console.WriteLine();
+                if (delthaF[status].ContainsKey(ch))
+                {
+                    status = delthaF[status][ch];
+                    Console.Write(t + ") " + ch + ", " + status);
+                    t++;
+                    Console.WriteLine();
+                }
+                else
+                {
+                    accepted = false;
+                    break;
+                }
             }
+
+            if (final.Contains(status) && accepted)
+                Console.WriteLine("Word accepted");
+            else
+                Console.WriteLine("Word don't accepted");
+            Console.WriteLine();
         }
+
+        public static bool Equals(List<int> first, List<int> second)
+        {
+            if (first.Count != second.Count)
+                return false;
+
+            foreach (var node in first)
+                if (!second.Contains(node))
+                    return false;
+
+            return true;
+        }
+
+        public static string ListToString(List<int> lst)
+        {
+            StringBuilder temp = new StringBuilder();
+            if (lst.Count == 0)
+                return "";
+            else
+                foreach (var item in lst)
+                    temp.Append(item.ToString());
+            return temp.ToString();
+        }
+
     }
 }
