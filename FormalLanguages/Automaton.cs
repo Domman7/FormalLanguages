@@ -291,7 +291,7 @@ namespace FormalLanguages
                 return "";
             else
                 foreach (var item in lst)
-                    temp.Append(item.ToString());
+                    temp.Append(item.ToString() + ".");
             return temp.ToString();
         }
 

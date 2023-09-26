@@ -5,7 +5,7 @@ using System.IO;
 
 namespace FormalLanguages
 {
-    class NDAutomaton
+    class eNDAutomaton
     {
         protected Dictionary<int, Dictionary<char, List<int>>> delthaF;
         protected List<char> alphabet;
@@ -14,7 +14,7 @@ namespace FormalLanguages
         protected int initial;
         protected List<int> final;
 
-        public NDAutomaton(string fileName)
+        public eNDAutomaton(string fileName)
         {
             string[] replace = fileName.Split("\\");
             String.Join("/", replace);
@@ -30,6 +30,7 @@ namespace FormalLanguages
                     length = int.Parse(line[0]);
                     foreach (var item in line[1])
                         alphabet.Add(item);
+                    alphabet.Add('\0');
                 }
 
                 if (file.Peek() != -1) //read amount of statuses
@@ -45,7 +46,10 @@ namespace FormalLanguages
                         List<int> variable = new List<int>();
                         foreach (var item in mas[j + 1].Split(','))
                             variable.Add(int.Parse(item));
-                        temp.Add(char.Parse(mas[j]), variable);
+                        if(!mas[j].Equals("\\0"))
+                            temp.Add(char.Parse(mas[j]), variable);
+                        else
+                            temp.Add('\0', variable);
                     }
                     delthaF.Add(int.Parse(mas[0]), temp);
                 }
@@ -62,62 +66,6 @@ namespace FormalLanguages
                         final.Add(int.Parse(item));
                 }
             }
-        }
-
-        public NDAutomaton(eNDAutomaton init)
-        {
-            length = init.Length - 1;
-            amount = init.Amount;
-            initial = init.Initial;
-            alphabet = init.Alphabet;
-            final = init.Final;
-            alphabet.Remove('\0');
-            delthaF = new Dictionary<int, Dictionary<char, List<int>>>();
-            var temp = init.DelthaF;
-            Dictionary<int, List<int>> CL = new Dictionary<int, List<int>>();
-            foreach (var item in temp.Keys)
-            {
-                if (temp[item].ContainsKey('\0'))
-                {
-                    var lst = new List<int>(temp[item]['\0']);
-                    lst.Add(item);
-                    lst.Sort();
-                    List<int> added = new List<int>();
-                    foreach (var finalItem in final)
-                        if (lst.Contains(finalItem))
-                            added.Add(item);
-                    foreach(var addedItem in added)
-                        if(!final.Contains(addedItem))
-                        {
-                            final.Add(addedItem);
-                            final.Sort();
-                        }
-
-                    CL[item] = lst;
-                }
-            }
-
-            //foreach (var item in final)
-            //    Console.WriteLine(item);
-            //foreach (var item in CL)
-            //    Console.WriteLine(item.Key + " " + Automaton.ListToString(item.Value));
-
-            foreach (var item in temp.Keys)
-            {
-                if (!temp[item].ContainsKey('\0'))
-                    delthaF[item] = new Dictionary<char, List<int>>(temp[item]);
-                else
-                {
-                    var addedDict = new Dictionary<char, List<int>>(temp[item]);
-                    foreach (var status in CL.Keys)
-                        if (temp[item]['\0'].Contains(status))
-                        {
-
-                        }
-                }
-
-            }
-
         }
 
         public Dictionary<int, Dictionary<char, List<int>>> DelthaF
@@ -176,7 +124,10 @@ namespace FormalLanguages
             Console.Write("  \t");
             foreach (var item in alphabet)
             {
-                Console.Write(item + "\t\t");
+                if (!item.Equals('\0')) 
+                    Console.Write(item + "\t\t");
+                else
+                    Console.Write("eps" + "\t\t");
             }
             Console.WriteLine();
 
@@ -222,6 +173,17 @@ namespace FormalLanguages
                 SortedSet<int> tempStatuses = new SortedSet<int>();
                 foreach (var status in curStatuses)
                 {
+                    if (delthaF[status].ContainsKey('\0'))//eps move
+                    {
+                        foreach (var item in delthaF[status]['\0'])
+                        {
+                            tempStatuses.Add(item);
+                            Console.Write(t + ") " + status + " " + "eps" + ", " + item);
+                            t++;
+                            Console.WriteLine();
+                        }
+                    }
+
                     if (delthaF[status].ContainsKey(ch))
                     {
                         foreach (var item in delthaF[status][ch])
@@ -233,7 +195,7 @@ namespace FormalLanguages
                         }
                     }
                 }
-                if(tempStatuses.Count==0)
+                if (tempStatuses.Count == 0)
                 {
                     accepted = false;
                     break;
