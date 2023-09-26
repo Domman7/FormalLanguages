@@ -73,8 +73,11 @@ namespace FormalLanguages
             final = init.Final;
             alphabet.Remove('\0');
             delthaF = new Dictionary<int, Dictionary<char, List<int>>>();
+
             var temp = init.DelthaF;
             Dictionary<int, List<int>> CL = new Dictionary<int, List<int>>();
+
+            //forming CL dictionary and check for new final statuses
             foreach (var item in temp.Keys)
             {
                 if (temp[item].ContainsKey('\0'))
@@ -86,6 +89,8 @@ namespace FormalLanguages
                     foreach (var finalItem in final)
                         if (lst.Contains(finalItem))
                             added.Add(item);
+
+                    //check for CLs, whick leads to final statuses in one step
                     foreach(var addedItem in added)
                         if(!final.Contains(addedItem))
                         {
@@ -97,23 +102,54 @@ namespace FormalLanguages
                 }
             }
 
-            //foreach (var item in final)
-            //    Console.WriteLine(item);
-            //foreach (var item in CL)
-            //    Console.WriteLine(item.Key + " " + Automaton.ListToString(item.Value));
+            //re-update final statuses
+            //two and more steps to final status
+            for (int i = 0; i < CL.Count - 1; i++)
+            {
+                foreach (var status in CL.Keys)
+                {
+                    if (final.Contains(status))
+                    {
+                        foreach (var item in CL.Keys)
+                            if (!final.Contains(item))
+                            {
+                                foreach (var itemValue in CL[item])
+                                    if (final.Contains(itemValue))
+                                    {
+                                        final.Add(item);
+                                        break;
+                                    }
+                            }
+                    }
+                }
+            }
 
+            //updating delthaF
             foreach (var item in temp.Keys)
             {
                 if (!temp[item].ContainsKey('\0'))
                     delthaF[item] = new Dictionary<char, List<int>>(temp[item]);
                 else
                 {
+                    //adding eps-statuses
                     var addedDict = new Dictionary<char, List<int>>(temp[item]);
-                    foreach (var status in CL.Keys)
-                        if (temp[item]['\0'].Contains(status))
-                        {
+                    foreach(var ch in alphabet)
+                    {
+                        var addedList = new List<int>();
+                        if (temp[item].ContainsKey(ch))
+                            addedList = temp[item][ch];
 
-                        }
+                        //check for additional moves
+                        if (CL.ContainsKey(item))
+                            foreach (var CLitems in CL[item])
+                                if(temp[CLitems].ContainsKey(ch))
+                                    foreach (var CLsubitem in temp[CLitems][ch])
+                                        if (!addedList.Contains(CLsubitem))                                   
+                                            addedList.Add(CLsubitem);
+                        addedList.Sort();
+                        addedDict[ch] = addedList;
+                    }
+                    delthaF[item] = addedDict;
                 }
 
             }

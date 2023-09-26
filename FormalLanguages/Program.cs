@@ -21,17 +21,19 @@ namespace FormalLanguages
             //temp.Show();
             //Console.WriteLine();
 
-            var eNDA = new eNDAutomaton(@"C:\Users\manasypoves\Desktop\eNDA.txt");
+            var eNDA = new eNDAutomaton(@"C:\Users\Egor\Desktop\eNDA.txt");
             eNDA.Show();
             Console.WriteLine();
 
             var NDA = new NDAutomaton(eNDA);
+            NDA.Show();
+            Console.WriteLine();
 
-            for (; ; )
-            {
-                var word = Console.ReadLine();
-                eNDA.Read(word);
-            }
+            //for (; ; )
+            //{
+            //    var word = Console.ReadLine();
+            //    eNDA.Read(word);
+            //}
         }
     }
 }
